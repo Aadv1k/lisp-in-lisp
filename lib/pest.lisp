@@ -1,15 +1,10 @@
-(defpackage pest
-  (:use :common-lisp)
-  (:export pest-assert-a-equal-b pest-assert-a-has-b)
-)
-
-(in-package :pest)
-
 (defun assertion-error (msg)
-  (error "pest assertion error: ~A" msg)
+  (format 't "[FAILED]: ~A" msg)
+  (terpri)
+  (quit)
 )
 
-(defun pest-assert-a-equal-b (a b)
+(defun pest-assert-a-equal-to-b (a b)
   "Assert a is equal to b"
   (cond
     ((and (typep a 'list) (typep b 'list))

@@ -1,4 +1,4 @@
-(load "utils.lisp")
+(load "./lib/utils.lisp")
 (load "exceptions.lisp")
 
 (defconstant token-lp 'LPAREN)
