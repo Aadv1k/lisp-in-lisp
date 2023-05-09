@@ -1,0 +1,16 @@
+(defun utl-split-by-lines (str)
+  (let ((lines ()))
+    (let ((col 0))
+
+      (dotimes (i (length str))
+	(if (char= (char str i) #\Newline)
+	    (progn
+	      (push (subseq str col (- i 1)) lines)
+	      (setq col (+ i 1))
+	      )
+	    )
+	)
+      (when (EQ lines nil) (push str lines))
+      )
+    lines)
+  )
