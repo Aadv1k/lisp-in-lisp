@@ -15,6 +15,23 @@
     lines)
   )
 
+(defun utl-string-get-last-char (str)
+  (list (char str (- (length str) 1)) (- (length str) 1))
+)
+
+
+(defun utl-find-next-space-or-end (start str)
+  (let ((index (loop for i from start below (length str)
+                    when (or (char= (char str i) #\Space)
+                             (char= (char str i) #\Newline)
+                             (char= (char str i) #\Tab)
+                             (char= (char str i) #\))
+
+                             )
+                    return i
+                    finally (return (length str)))))
+    (list index (- index start))))
+
 
 (defun utl-split-string (string &optional (separator " "))
   (split-str-1 string separator))
