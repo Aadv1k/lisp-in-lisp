@@ -1,15 +1,16 @@
 # Lisp^2 
 
-This is an experimental implementation of [common lisp](https://common-lisp.net/) in common lisp, via [Steel Bank Common Lisp](http://www.sbcl.org/)
+This is a very barebones and experimental implementation of [common lisp](https://common-lisp.net/) within itself.
 
 ### Build
 
-This project is built using common lisp via the [Steel Bank Common Lisp](https://www.sbcl.org/) compiler, so I would direct you to their [install page](https://www.sbcl.org/platform-table.html)
+This project is built using common lisp via [Steel Bank Common Lisp](https://www.sbcl.org/) so I would direct you to their [install page](https://www.sbcl.org/platform-table.html)
 
-Testing can be done via [pest](./lib/pest.lisp), just run the following  in terminal
+Testing can be done via [pest](./lib/pest.lisp), which is a simple 
 
 ```console
-$ sbcl --script ./tests/*.lisp
+$ sbcl --script ./tests/tokenizer-test.lisp
+$ sbcl --script ./tests/parser-test.lisp
 ```
 
 ### Supported Syntax

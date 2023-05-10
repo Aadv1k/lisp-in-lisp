@@ -1,5 +1,5 @@
 (defun assertion-error (msg)
-  (format 't "[FAILED]: ~A" msg)
+  (format 't "~A~%" msg)
   (terpri)
   (quit)
 )
@@ -9,10 +9,13 @@
   (cond
     ((and (typep a 'list) (typep b 'list))
      (when (not (eql (length a) (length b)))
-       (assertion-error (format nil "~A is not equal to ~A" a b))))
+       (assertion-error (format nil "[FAILED] ~A is not equal to ~A" a b))))
     (t
      (when (not (eql a b))
-       (assertion-error (format nil "~A is not equal to ~A" a b))))))
+       (assertion-error (format nil "[FAILED] ~A is not equal to ~A" a b))))
+    )
+    (format t "[PASSED] ~A is equal to ~A~%" a b)
+)
 
 (defun pest-assert-a-has-b (a b)
   "Check if a is in list b"
