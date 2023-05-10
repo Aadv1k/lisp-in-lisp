@@ -2,35 +2,43 @@
 (load "exceptions.lisp")
 
 (defconstant token-lp 'LPAREN)
-(defconstant token-rp 'RAPREN)
+(defconstant token-rp 'RPAREN)
 (defconstant token-number 'NUMBER)
 (defconstant token-symbol 'SYMBOL)
 
 (defun find-next-char-from-index (str ch index)
   (loop for i from index below (length str) do 
-    (if (char= (char str i)) (return (list (+ i index 1) i)))
+    (if (char= (char str i) ch) (return (list (+ i index) i)))
   )
+)
+
+
+;;(push tokens (lil-split-expr (subseq str (+ i 1) (nth 1 (find-next-char-from-index str #\) 0)))))
+
+(defun lil-parse-expr (str) 
+  (reverse (
+            map 'list (lambda (elem) 
+                        (cond ((numberp 
+                                 (parse-integer elem :junk-allowed t)
+                                 ) (list token-number (parse-integer elem))) (t (list token-symbol elem)))) (utl-split-string str " ")))
 )
 
 (defun lil-split-expr (str)
   "Will tokenize expression within parenthesis"
-
   (let ((tokens (list)) (trunc-str ""))
     (dotimes (i (length str)) 
-      (if 
-        (and (not (char= (char str i) #\())
-             (not (char= (char str i) #\)))
-         ) (progn
-          (setq trunc-str (concatenate 'string trunc-str (string (char str i))))
-         )
-        )
+      (cond 
+        ((char= (char str i) #\() (progn 
+              (push (list token-lp) tokens)
+              )
+            )
+        ((char= (char str i) #\)) (push (list token-rp) tokens))
+       (t (progn (setq trunc-str (concatenate 'string trunc-str (string (char str i))))))
+      )
    )
 
-    (reverse (map 'list (lambda (elem) (cond 
-                    ((numberp (parse-integer elem :junk-allowed t)) (list token-number (parse-integer elem)))
-                    (t (list token-symbol elem))
-                                )) (utl-split-string trunc-str " ")))
-  )
+
+  (lil-parse-expr trunc-str))
 )
 
 
@@ -47,10 +55,9 @@
   result)
 )
 
-(defun lil-parse-expr (expr)
+(defun lil-sus (expr)
   (let ((stack '()))
   (dotimes (i (length expr))
-    (print (nth i expr))
     (let ((token (nth i expr)))
       (cond 
         ((eql token-number (nth 0 token)) (push (nth 1 token) stack))
@@ -61,13 +68,16 @@
             )
         ))
       )
-      (print stack)
     )
   )
   stack)
 )
 
-(print (lil-parse-expr (lil-split-expr "(- (+ 1 1) (* 1 2))")))
+;;(print (lil-split-expr  "(+ 1 (+ 1 (* 1 2)))"))
+
+(print (lil-sus (lil-split-expr "(+ 1 (- 0 (* 1 2)))")))
+(terpri)
+
 
 (defun lil-tokenize-line (str)
   (let ((tokens (list)) (cursor 0) (paren-open t))
